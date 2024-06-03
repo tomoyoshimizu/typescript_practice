@@ -14,3 +14,5 @@ class CommonUser {
 
 const uhyo = new CommonUser("uhyo", 26);
 console.log(uhyo.getMessage("こんにちは"));
+
+export {};

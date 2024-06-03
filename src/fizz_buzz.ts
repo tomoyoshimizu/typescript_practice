@@ -32,3 +32,5 @@ rl.question("好きな数字を入力してください:", (value) => {
   }
   rl.close();
 })
+
+export {};

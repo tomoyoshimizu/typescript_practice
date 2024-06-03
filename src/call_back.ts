@@ -13,3 +13,5 @@ const result2 = map<number, boolean>(numArray, (x) => x >= 0);
 
 console.log(result1);
 console.log(result2);
+
+export {};

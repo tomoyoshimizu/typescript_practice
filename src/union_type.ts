@@ -43,3 +43,5 @@ showNumber(myNumber);
 console.log(doubleNumber(myNumber));
 showNumber(blankNumber);
 console.log(doubleNumber(blankNumber));
+
+export {};
