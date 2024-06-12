@@ -180,6 +180,7 @@ class Game {
 
   async start(): Promise<void>{
     this.console.message("Game start!");
+    this.deck.shuffle();
     this.dealer.draw(this.deck, 1, true);
     this.dealer.draw(this.deck, 1, false);
     this.you.draw(this.deck, 2, true);
@@ -202,7 +203,7 @@ class Game {
           case "hit":
             this.you.draw(this.deck, 1, true);
             this.console.info("YOU draw card.");
-            if (this.you.score == 21) {
+            if (this.you.score === 21) {
               this.console.message("YOU get 21!");
               this.result["you"] = 21;
               isContinue = false;
@@ -231,7 +232,7 @@ class Game {
     this.dealer.holeCardOpen();
     this.console.info("Hole card open!");
 
-    if (this.dealer.score == 21){
+    if (this.dealer.score === 21){
       await this.console.sleep(1000);
       this.console.message("DEALER get natural 21!")
       this.result["dealer"] = 22
@@ -242,7 +243,7 @@ class Game {
         if (this.dealer.score < 17){
           this.dealer.draw(this.deck, 1, true)
           this.console.info("DEALER draw card.")
-          if (this.dealer.score == 21) {
+          if (this.dealer.score === 21) {
             this.console.message("DEALER get 21!")
             this.result["dealer"] = 21
             isContinue = false;
@@ -259,7 +260,7 @@ class Game {
     }
 
     await this.console.sleep(1000);
-    if (this.result["dealer"] == this.result["you"]) {
+    if (this.result["dealer"] === this.result["you"]) {
       this.console.message("Draw game.")
     } else if (this.result["dealer"] < this.result["you"]){
       this.console.message("You win!")
