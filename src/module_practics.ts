@@ -11,7 +11,7 @@ const countText = (textFilePath: string, word: string): void => {
     const data: string = fs.readFileSync(textFilePath, "utf-8");
     const regex: RegExp = new RegExp(word, "g");
     const matches: RegExpMatchArray | null = data.match(regex);
-    if(matches === null){
+    if (matches === null) {
       console.log(`「${word}」は見つかりませんでした。`);
     } else {
       console.log(`「${word}」は${matches.length}件見つかりました。`);

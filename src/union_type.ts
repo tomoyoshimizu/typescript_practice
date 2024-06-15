@@ -7,32 +7,35 @@ type Blank = {
 };
 type Option<T> = Present<T> | Blank;
 
-function showNumber(entry: Option<number>): void{
-  if (entry.hasValue){
+function showNumber(entry: Option<number>): void {
+  if (entry.hasValue) {
     console.log(entry.value);
   }
 }
 
-function doubleNumber(entry: Option<number>){
+function doubleNumber(entry: Option<number>) {
   return mapOption<number, number>(entry, (x) => x * 2);
 }
 
-function mapOption<T, U>(entry: Option<T>, callback: (value: T) => U): Option<U>{
-  if (entry.hasValue){
+function mapOption<T, U>(
+  entry: Option<T>,
+  callback: (value: T) => U
+): Option<U> {
+  if (entry.hasValue) {
     return {
       hasValue: true,
-      value: callback(entry.value)
-    }
+      value: callback(entry.value),
+    };
   } else {
     return {
-      hasValue: false
-    }
+      hasValue: false,
+    };
   }
 }
 
 const myNumber: Option<number> = {
   hasValue: true,
-  value: 896
+  value: 896,
 };
 
 const blankNumber: Option<number> = {
