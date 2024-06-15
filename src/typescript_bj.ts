@@ -21,14 +21,14 @@ class Card {
 
   get suitAndRank(): string {
     const convertMark = (suit: string): string => {
-      return {spades: "♠", hearts: "♥", diams: "♦", clubs: "♣"}[suit] || suit
+      return {spades: "♠", hearts: "♥", diams: "♦", clubs: "♣"}[suit] || suit;
     }
-    return this.isOpen ? `${convertMark(this.suit)} ${this.rank}` : "???"
+    return this.isOpen ? `${convertMark(this.suit)} ${this.rank}` : "???";
   }
 }
 
 class Deck<T> {
-  cards: T[];
+  cards: (T | undefined)[];
 
   constructor(cards: T[]){
     this.cards = cards;
@@ -53,12 +53,12 @@ class Player {
 
   get score(): number {
     let score: number = 0;
-    let num_of_ace: number = 0;
+    let numOfAce: number = 0;
     for (const card of this.hand){
       if (card.isOpen){
         switch (card.rank){
           case "A":
-            num_of_ace += 1;
+            numOfAce += 1;
             break;
           case "J":
           case "Q":
@@ -70,21 +70,21 @@ class Player {
         }
       }
     };
-    for (let i = 0; i < num_of_ace; i++ ) {
-      score += score <= 10 ? 11 : 1
+    for (let i = 0; i < numOfAce; i++ ) {
+      score += score <= 10 ? 11 : 1;
     }
     return score;
   }
 
   draw(deck: Deck<Card>, number: number, isOpen: boolean): void {
     for (let i = 0; i < number; i++ ) {
-      const draw_card = deck.cards.shift();
-      if (draw_card === undefined){
+      const drawCard = deck.cards.shift();
+      if (drawCard === undefined){
         console.log("There are no cards in the deck.");
         break;
       } else {
-        draw_card.isOpen = isOpen;
-        this.hand.push(draw_card);
+        drawCard.isOpen = isOpen;
+        this.hand.push(drawCard);
       }
     }
   }
@@ -103,40 +103,36 @@ class Console{
     this.players = players;
   }
 
-  message(text: string){
+  message(text: string): void {
     console.log(text);
   }
 
-  info(text: string){
+  info(text: string): void {
+    const line = (name: string = ""): string => {
+      let result = name;
+      let line_length = 64 - name.length;
+      for (let i = 0; i < line_length; i++ ) {
+        result += "-";
+      }
+      return result;
+    }
+
     console.log(text);
     for (const player of this.players){
-      console.log(this.line(player.name));
-      console.log(`hand: ${this.hand(player.hand)}`);
+      console.log(line(player.name));
+      console.log(`hand: ${player.hand.map((card) => card.suitAndRank).join()}`);
       console.log(`score: ${player.score}`);
-      console.log(this.line());
+      console.log(line());
     }
   }
 
-  line(name: string = ""): string {
-    let result = name;
-    let line_length = 64 - name.length
-    for (let i = 0; i < line_length; i++ ) {
-      result += "-"
-    }
-    return result;
-  }
-
-  hand(player_hand: Card[]): string{
-    return player_hand.map((card) => card.suitAndRank).join();
-  }
-
-  readUserInput(question: string) {
+  readUserInput(question: string): Promise<string> {
     const readline = createInterface({
       input: process.stdin,
       output: process.stdout
     });
 
-    return new Promise<string>((resolve) => {
+    return new Promise<string> ((resolve) => {
       readline.question(question, (answer) => {
         resolve(answer);
         readline.close();
@@ -144,7 +140,7 @@ class Console{
     });
   };
 
-  sleep(duration: number) {
+  sleep(duration: number): Promise<void> {
     return new Promise<void>((resolve) => {
       setTimeout(resolve, duration);
     })
@@ -178,7 +174,7 @@ class Game {
     this.result = {dealer: 0, you: 0};
   }
 
-  async start(): Promise<void>{
+  async start(): Promise<void> {
     this.console.message("Game start!");
     this.deck.shuffle();
     this.dealer.draw(this.deck, 1, true);
@@ -207,12 +203,10 @@ class Game {
               this.console.message("YOU get 21!");
               this.result["you"] = 21;
               isContinue = false;
-              break;
             } else if (this.you.score > 21) {
               this.console.message("YOU bust!");
               this.result["you"] = -1;
               isContinue = false;
-              break;
             }
             break;
           case "n":

@@ -15,7 +15,7 @@ const users: User[] = data.split('\n')
   .map(line => {
     const [name, age, premiumUser] = line.split(',');
     return {
-      name: name,
+      name: String(name),
       age: Number(age),
       premiumUser: Boolean(Number(premiumUser))
     };
